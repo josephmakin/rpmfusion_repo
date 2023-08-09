@@ -1,0 +1,18 @@
+---
+- name: Importing (free) key
+  ansible.builtin.rpm_key:
+    state: present
+    key: "{{ rpmfusion_free_key_url }}"
+
+- name: Importing (non-free) key
+  ansible.builtin.rpm_key:
+    state: present
+    key: "{{ rpmfusion_nonfree_key_url }}"
+
+- name: Install the rpmfusion repo packages
+  dnf:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ rpmfusion_free_release_url }}"
+    - "{{ rpmfusion_nonfree_release_url }}"
